@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamed Hany </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+            (function(){
+            emailjs.init("RIlxjmW3XpFOyW9vX"); 
+        })();
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon" id="logo-3d"></div>
+                 Mohamed Hany
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#skills">Skills</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div id="particles-js"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Bridging Data & <span>Intelligence</span></h1>
+                <p>Machine Learning Student who loves building interactive websites. I build predictive models for healthcare, signal processing interfaces, and interactive web applications.</p>
+                <a href="#projects" class="btn">View My Work</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-3d-container" id="project-heart"></div>
+                        <div class="viewer-instructions">Drag to Rotate | Double Click</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Heart Prediction System</h3>
+                        <p>A machine learning model that predicts the presence of heart disease using patient health metrics and Logistic Regression.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Scikit-Learn</span>
+                            <span class="tag">Medical AI</span>
+                        </div>
+                        <a href="project-heart.html" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-3d-container" id="project-eog"></div>
+                        <div class="viewer-instructions">Drag to Rotate | Double Click</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>EOG Eye Tracker</h3>
+                        <p>An HCI system that classifies eye movements (Up, Down, Left, Right, Blink) using EOG signals for cursor control.</p>
+                        <div class="project-tags">
+                            <span class="tag">PyQt5</span>
+                            <span class="tag">Signal Processing</span>
+                            <span class="tag">HCI</span>
+                        </div>
+                        <a href="project-eog.html" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-3d-container" id="project-stormy"></div>
+                        <div class="viewer-instructions">Interactive Pool Grid</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Stormy Pools Construction</h3>
+                        <p>A luxury commercial website designed for a pool construction company, featuring architectural galleries and service blueprints.</p>
+                        <div class="project-tags">
+                            <span class="tag">Architecture</span>
+                            <span class="tag">Responsive Design</span>
+                            <span class="tag">CSS Grid</span>
+                        </div>
+                        <a href="project-stormy.html" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-3d-container" id="project-signal"></div>
+                        <div class="viewer-instructions">Interactive Sine Wave</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Signal Processing Framework</h3>
+                        <p>A desktop application building DSP algorithms from scratch, including recursive FFT, FIR filtering, and quantization.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Tkinter</span>
+                            <span class="tag">DSP</span>
+                        </div>
+                        <a href="project-signal.html" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section class="section" id="skills">
+        <div class="container">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-container">
+                
+                <div class="skill-category">
+                    <h3>Data Science & AI</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <i class="fas fa-brain"></i>
+                            <span>Supervised Learning (SVM, LogReg)</span>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <i class="fas fa-wave-square"></i>
+                            <span>Signal Processing & Time-Series</span>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <i class="fas fa-filter"></i>
+                            <span>Feature Engineering</span>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <i class="fas fa-table"></i>
+                            <span>Pandas & NumPy</span>
+                        </div>
+
+                        <div class="skill-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Data Visualization (Matplotlib)</span>
+                        </div>
+
+                        <div class="skill-item">
+                            <i class="fas fa-check-double"></i>
+                            <span>Model Evaluation & Validation</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>Full Stack & Deployment</h3>
+                    <div class="skill-items">
+                        <div class="skill-item"><i class="fab fa-js"></i><span>JavaScript (ES6+)</span></div>
+                        <div class="skill-item"><i class="fab fa-react"></i><span>React.js</span></div>
+                        <div class="skill-item"><i class="fab fa-python"></i><span>PyQt5 (GUI)</span></div>
+                        <div class="skill-item"><i class="fab fa-html5"></i><span>HTML5 & CSS3</span></div>
+                        <div class="skill-item"><i class="fas fa-code-branch"></i><span>Git & GitHub</span></div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Let's Collaborate</h3>
+                    <p>I am currently available for internships and research opportunities in Machine Learning and Web Development. Feel free to reach out!</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Moharidy05" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                        &nbsp;&nbsp;
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        &nbsp;&nbsp;
+                        <a href="mailto:mhh.haridy@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="from_name" required> 
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="from_email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Mohamed Hany. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

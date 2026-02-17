@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EOG Eye Tracker | Mohamed Hany</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="project-page">
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">Mohamed Hany</a>
+            <nav><ul><li><a href="index.html#projects">Back to Portfolio</a></li></ul></nav>
+        </div>
+    </header>
+
+    <section class="section project-detail">
+        <div class="container">
+            <h1>EOG Eye Movement Interface</h1>
+            <div class="project-meta">
+                <span><i class="fas fa-eye"></i> HCI</span>
+                <span><i class="fas fa-wave-square"></i> Signal Processing</span>
+                <span><i class="fas fa-desktop"></i> PyQt5 GUI</span>
+            </div>
+            
+            <div class="project-content-grid">
+                <div class="text-content">
+                    <h3>Project Overview</h3>
+                    <p>An assistive technology interface that allows users to control a computer system using only their eye movements. The system processes Electrooculography (EOG) signals to detect directional gaze and blinking, translating them into digital commands.</p>
+                    
+                    <h3>Key Features</h3>
+                    <ul class="tech-list">
+                        <li><strong>Signal Classification:</strong> Detects 5 distinct classes: Up, Down, Left, Right, and Blink.</li>
+                        <li><strong>GUI Application:</strong> A user-friendly interface built with `PyQt5` (`Guitest.py`) for real-time visual feedback.</li>
+                        <li><strong>Dataset:</strong> Utilized custom dataset `eye_movement_ml_ready.csv` processed for high-accuracy training.</li>
+                    </ul>
+
+                    <div class="project-buttons" style="margin-top: 30px;">
+                        <a href="https://github.com/Moharidy05/EOG-Signal_Processing" class="btn" target="_blank">
+                            <i class="fab fa-github"></i> View Source Code
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="code-preview" style="border-color: var(--secondary);">
+                    <pre><code>
+# Feature Extraction Logic (Signal Processing)
+def classify_movement(signal_segment):
+    # Extract temporal features
+    mean_val = np.mean(signal_segment)
+    std_dev = np.std(signal_segment)
+    max_amp = np.max(signal_segment)
+    
+    # Construct feature vector
+    features = [mean_val, std_dev, max_amp]
+    
+    # Predict movement class using SVM
+    prediction = model.predict([features])
+    
+    return movement_map[prediction]
+
+# GUI Update
+class MainWindow(QMainWindow):
+    def update_ui(self, direction):
+        self.label.setText(f"Detected: {direction}")
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

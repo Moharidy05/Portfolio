@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Processing Framework | Mohamed Hany</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="project-page">
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">Mohamed Hany</a>
+            <nav><ul><li><a href="index.html#projects">Back to Portfolio</a></li></ul></nav>
+        </div>
+    </header>
+
+    <section class="section project-detail">
+        <div class="container">
+            <h1>Signal Processing Framework</h1>
+            <div class="project-meta">
+                <span><i class="fab fa-python"></i> Python & Tkinter</span>
+                <span><i class="fas fa-wave-square"></i> FFT/DFT Algorithms</span>
+                <span><i class="fas fa-microchip"></i> DSP From Scratch</span>
+            </div>
+            
+            <div class="project-content-grid">
+                <div class="text-content">
+                    <h3>Project Overview</h3>
+                    <p>A comprehensive desktop application designed for the analysis, manipulation, and synthesis of digital signals. Unlike standard tools, this framework implements core DSP algorithms (like FFT, Convolution, and Quantization) from scratch to demonstrate a deep understanding of the underlying mathematics.</p>
+                    
+                    <h3>Technical Capabilities</h3>
+                    <ul class="tech-list">
+                        <li><strong>Frequency Domain:</strong> Implemented recursive FFT (Cooley-Tukey) and O(N²) DFT algorithms manually.</li>
+                        <li><strong>Digital Filtering:</strong> Custom FIR filter design interface supporting Low, High, Band Pass, and Band Stop filters with various windowing techniques.</li>
+                        <li><strong>Signal Operations:</strong> Features time-domain convolution, correlation, signal quantization (bits/levels), and sampling rate conversion.</li>
+                    </ul>
+
+                    <div class="project-buttons" style="margin-top: 30px;">
+                        <a href="https://github.com/Moharidy05/Digital-Signal-Processing" class="btn" target="_blank">
+                            <i class="fab fa-github"></i> View Source Code
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="code-preview" style="border-color: var(--primary);">
+                    <pre><code>
+# Recursive FFT Implementation (From Scratch)
+def _scratch_fft_recursive(x: np.ndarray) -> np.ndarray:
+    """
+    Computes the FAST Fourier Transform (FFT) 
+    using the recursive Cooley-Tukey DIT algorithm.
+    """
+    x = np.asarray(x, dtype=complex)
+    N = len(x)
+
+    # Base Case
+    if N == 1:
+        return x
+
+    # Recursive Step (Divide)
+    x_even = _scratch_fft_recursive(x[::2])
+    x_odd = _scratch_fft_recursive(x[1::2])
+
+    # Twiddle factors (W_N^k)
+    k_array = np.arange(N // 2)
+    twiddles = np.exp(-2j * np.pi * k_array / N)
+
+    # Combine (Butterfly Operation)
+    t_product = twiddles * x_odd
+    
+    X = np.zeros(N, dtype=complex)
+    X[:N//2] = x_even + t_product
+    X[N//2:] = x_even - t_product
+
+    return X
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

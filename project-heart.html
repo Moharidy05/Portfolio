@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Prediction System | Mohamed Hany</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="project-page">
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">Mohamed Hany</a>
+            <nav><ul><li><a href="index.html#projects">Back to Portfolio</a></li></ul></nav>
+        </div>
+    </header>
+
+    <section class="section project-detail">
+        <div class="container">
+            <h1>Heart Disease Prediction System</h1>
+            <div class="project-meta">
+                <span><i class="fas fa-code"></i> Python</span>
+                <span><i class="fas fa-calculator"></i> Logistic Regression</span>
+                <span><i class="fas fa-database"></i> 95% Accuracy</span>
+            </div>
+            
+            <div class="project-content-grid">
+                <div class="text-content">
+                    <h3>Project Overview</h3>
+                    <p>This project utilizes machine learning to predict the likelihood of heart disease in patients based on medical attributes. By analyzing key health indicators such as age, blood pressure, and cholesterol levels, the model aids in the early identification of cardiovascular risks.</p>
+                    
+                    <h3>Technical Implementation</h3>
+                    <ul class="tech-list">
+                        <li><strong>Data Preprocessing:</strong> Cleaned and normalized the `heart.csv` dataset using Pandas.</li>
+                        <li><strong>Model Architecture:</strong> Implemented Logistic Regression using Scikit-Learn for binary classification.</li>
+                        <li><strong>Validation:</strong> Utilized `train_test_split` to separate training and testing data, achieving high accuracy.</li>
+                    </ul>
+
+                    <div class="project-buttons" style="margin-top: 30px;">
+                        <a href="https://github.com/Moharidy05/Heart-Disease-Prediction" class="btn" target="_blank">
+                            <i class="fab fa-github"></i> View Source Code
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="code-preview" style="border-color: var(--accent);">
+                    <pre><code>
+# Model Training Snippet
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+# 1. Load Data
+heart_data = pd.read_csv('heart.csv')
+
+# 2. Split Features & Target
+X = heart_data.drop(columns='target', axis=1)
+Y = heart_data['target']
+
+# 3. Train Model
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+model = LogisticRegression()
+model.fit(X_train, Y_train)
+
+# 4. Predict
+accuracy = accuracy_score(X_train_prediction, Y_train)
+print(f"Training Accuracy: {accuracy}")
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
