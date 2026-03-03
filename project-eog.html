@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EOG Eye Tracker Project by Mohamed Hany. An assistive technology interface allowing users to control a computer system using eye movements.">
     <title>EOG Eye Tracker | Mohamed Hany</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
 <body class="project-page">
     <header>
@@ -44,7 +48,7 @@
                 </div>
                 
                 <div class="code-preview" style="border-color: var(--secondary);">
-                    <pre><code>
+                    <pre><code class="language-python">
 # Feature Extraction Logic (Signal Processing)
 def classify_movement(signal_segment):
     # Extract temporal features
@@ -69,5 +73,8 @@ class MainWindow(QMainWindow):
             </div>
         </div>
     </section>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </body>
 </html>

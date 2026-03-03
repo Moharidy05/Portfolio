@@ -2,19 +2,25 @@ document.addEventListener('DOMContentLoaded', function() {
     initLogo3D();
     initNeuralNetworkBackground(); 
     initProjectViewers();
+    initContact3D();
     setupSmoothScrolling();
     setupContactForm();
+    setupScrollSpy();
 });
 
 // ==========================================
 // mouse tracking
 // ==========================================
 const mouse = new THREE.Vector2();
+let throttleMouseTimer;
 window.addEventListener('mousemove', (e) => {
-
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-});
+    if (throttleMouseTimer) return;
+    throttleMouseTimer = requestAnimationFrame(() => {
+        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        throttleMouseTimer = null;
+    });
+}, { passive: true });
 
 // ==========================================
 // neural network
@@ -32,8 +38,16 @@ function initLogo3D() {
 
     const size = 50; 
     renderer.setSize(size, size);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
+
+    let isVisible = true;
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        });
+        observer.observe(container);
+    }
     
 
     const neuralNetGroup = new THREE.Group();
@@ -89,6 +103,7 @@ function initLogo3D() {
 
     function animate() {
         requestAnimationFrame(animate);
+        if (!isVisible) return;
         neuralNetGroup.rotation.y += 0.008; 
         neuralNetGroup.rotation.x += 0.004; 
         neuralNetGroup.rotation.z += 0.002; 
@@ -106,9 +121,18 @@ function initNeuralNetworkBackground() {
     
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
+
+    let isVisible = true;
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        });
+        observer.observe(document.getElementById('home') || container);
+    }
     
     camera.position.z = 80;
     const particleCount = 120; 
@@ -128,6 +152,7 @@ function initNeuralNetworkBackground() {
 
     function animate() {
         requestAnimationFrame(animate);
+        if (!isVisible) return;
         
 
         camera.position.x += (mouse.x * 10 - camera.position.x) * 0.05;
@@ -199,16 +224,49 @@ function initProjectViewers() {
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "low-power" });
         renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
         camera.position.z = 5;
+
+        let isVisible = true;
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                isVisible = entries[0].isIntersecting;
+            });
+            observer.observe(container);
+        }
+
+        window.addEventListener('resize', () => {
+            if (container.clientWidth > 0 && container.clientHeight > 0) {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+        }, { passive: true });
 
         let obj;
         
         if(proj.type === 'heart') {
-            obj = new THREE.Mesh(new THREE.IcosahedronGeometry(1.5, 1), new THREE.MeshPhongMaterial({ color: proj.color, wireframe: true }));
-        } 
+            const x = 0, y = 0;
+            const heartShape = new THREE.Shape();
+            heartShape.moveTo( x + 2.5, y + 2.5 );
+            heartShape.bezierCurveTo( x + 2.5, y + 2.5, x + 2.0, y, x, y );
+            heartShape.bezierCurveTo( x - 3.0, y, x - 3.0, y + 3.5,x - 3.0, y + 3.5 );
+            heartShape.bezierCurveTo( x - 3.0, y + 5.5, x - 1.5, y + 7.7, x + 2.5, y + 9.5 );
+            heartShape.bezierCurveTo( x + 6.0, y + 7.7, x + 8.0, y + 5.5, x + 8.0, y + 3.5 );
+            heartShape.bezierCurveTo( x + 8.0, y + 3.5, x + 8.0, y, x + 5.0, y );
+            heartShape.bezierCurveTo( x + 3.5, y, x + 2.5, y + 2.5, x + 2.5, y + 2.5 );
+
+            const extrudeSettings = { depth: 1.5, bevelEnabled: true, bevelSegments: 3, steps: 2, bevelSize: 1.5, bevelThickness: 1.5 };
+            const geometry = new THREE.ExtrudeGeometry( heartShape, extrudeSettings );
+            geometry.center();
+            geometry.rotateX(Math.PI); // Heart is drawn upside down initially
+            geometry.scale(0.19, 0.19, 0.19);
+            
+            obj = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: proj.color, wireframe: true }));
+        }
         else if (proj.type === 'wave') {
             obj = new THREE.Mesh(new THREE.TorusKnotGeometry(0.9, 0.3, 100, 16), new THREE.MeshPhongMaterial({ color: proj.color, wireframe: true }));
         } 
@@ -245,25 +303,23 @@ function initProjectViewers() {
         let previousMousePosition = { x: 0, y: 0 };
 
         container.style.cursor = 'grab';
-        container.addEventListener('mousedown', () => { 
-            isDragging = true; 
-            container.style.cursor = 'grabbing'; 
-        });
         
-        window.addEventListener('mouseup', () => { 
+        const pointerDown = (x, y) => {
+            isDragging = true; 
+            container.style.cursor = 'grabbing';
+            previousMousePosition = { x, y };
+        };
+        
+        const pointerUp = () => {
             isDragging = false; 
             container.style.cursor = 'grab'; 
-        });
+        };
         
-        container.addEventListener('dblclick', () => {
-            window.location.href = proj.link;
-        });
-
-        container.addEventListener('mousemove', (e) => {
+        const pointerMove = (x, y) => {
             if (isDragging) {
                 const deltaMove = { 
-                    x: e.offsetX - previousMousePosition.x, 
-                    y: e.offsetY - previousMousePosition.y 
+                    x: x - previousMousePosition.x, 
+                    y: y - previousMousePosition.y 
                 };
 
                 if (proj.type === 'pool') {
@@ -273,12 +329,46 @@ function initProjectViewers() {
                     obj.rotation.y += deltaMove.x * 0.01;
                     obj.rotation.x += deltaMove.y * 0.01;
                 }
+                previousMousePosition = { x, y };
             }
-            previousMousePosition = { x: e.offsetX, y: e.offsetY };
+        };
+
+        container.addEventListener('mousedown', (e) => pointerDown(e.clientX, e.clientY));
+        window.addEventListener('mouseup', pointerUp);
+        container.addEventListener('mousemove', (e) => pointerMove(e.clientX, e.clientY));
+
+        container.addEventListener('touchstart', (e) => {
+            if(e.touches.length === 1) {
+                pointerDown(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+        
+        window.addEventListener('touchend', pointerUp);
+        
+        container.addEventListener('touchmove', (e) => {
+            if(isDragging && e.touches.length === 1) {
+                e.preventDefault();
+                pointerMove(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: false });
+
+        let lastTap = 0;
+        container.addEventListener('touchend', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 500 && tapLength > 0) {
+                window.location.href = proj.link;
+            }
+            lastTap = currentTime;
+        });
+
+        container.addEventListener('dblclick', () => {
+            window.location.href = proj.link;
         });
 
         function animate(t) {
             requestAnimationFrame(animate);
+            if (!isVisible) return;
             
             if (!isDragging) {
                 if(proj.type === 'heart') {
@@ -322,6 +412,49 @@ function initProjectViewers() {
 }
 
 // ==========================================
+// contact 3d element
+// ==========================================
+function initContact3D() {
+    const container = document.getElementById('contact-3d-element');
+    if (!container) return;
+    
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "low-power" });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+    camera.position.z = 5;
+
+    let isVisible = true;
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        });
+        observer.observe(container);
+    }
+
+    const geometry = new THREE.IcosahedronGeometry(1.2, 0);
+    const material = new THREE.MeshPhongMaterial({ color: 0x8b5cf6, wireframe: true });
+    const wireObject = new THREE.Mesh(geometry, material);
+    scene.add(wireObject);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const light = new THREE.PointLight(0xffffff, 1);
+    light.position.set(5, 5, 5);
+    scene.add(light);
+
+    function animate() {
+        requestAnimationFrame(animate);
+        if(!isVisible) return;
+        wireObject.rotation.x += 0.005;
+        wireObject.rotation.y += 0.008;
+        renderer.render(scene, camera);
+    }
+    animate();
+}
+
+// ==========================================
 // scrolling
 // ==========================================
 function setupSmoothScrolling() {
@@ -342,6 +475,33 @@ function setupSmoothScrolling() {
     });
 }
 
+function setupScrollSpy() {
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('nav ul li a');
+    let scrollTimeout;
+
+    window.addEventListener('scroll', () => {
+        if (scrollTimeout) return;
+        scrollTimeout = requestAnimationFrame(() => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (current && link.getAttribute('href').includes('#' + current)) {
+                    link.classList.add('active');
+                }
+            });
+            scrollTimeout = null;
+        });
+    }, { passive: true });
+}
+
 // ==========================================
 // form
 // ==========================================
@@ -349,6 +509,9 @@ function setupContactForm() {
     const form = document.getElementById('contactForm');
     
     if (form) {
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init("RIlxjmW3XpFOyW9vX");
+        }
         form.addEventListener('submit', function(e) {
             e.preventDefault(); 
             
